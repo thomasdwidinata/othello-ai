@@ -1,0 +1,4 @@
+v1.0:
+- Fresh and new LOTS OF BUG, not working almost at all
+- Print function is working
+- Fresh U.I. has been implemented, little buggy.
