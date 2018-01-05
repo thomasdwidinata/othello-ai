@@ -18,3 +18,9 @@ v1.1:
 - Realize all arrays are inverted, still lots of bug, worse than v1.0.
 - Disaster version.
 - Reason to be backed up is not clear.
+
+v2.0:
+- U.I. Bug has been fixed, no problem.
+- Othello 80% working swaps, checks.
+- Print on inverted array fixed.
+- All inverted arrays have been fixed.
