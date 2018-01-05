@@ -1,0 +1,11 @@
+Input:
+
+Position / Coordinate of the desired position
+- (A to H) for Columns
+- (1 to 8) for Rows
+
+Example: A8; B7; a1; C7; h5
+
+Output:
+
+Printed Table / Othello Board.
