@@ -7,6 +7,7 @@ using namespace std;
 
 void initialize();
 void printBoard();
+void printArray();//debug purpose function
 void input();
 int characterParser(char x);
 int checkValid(int x, int y);//this checks if it is valid and directly flips if it is
@@ -56,6 +57,7 @@ void initialize(){
 void printBoard(){
 	char black = 177;
 	char white = 219;
+	cout<<"CLOCK = \t"<<clock<<endl;
 	cout<<"   A   B   C   D   E   F   G   H  "<<endl;
 	for(int x = 0; x<8; x++){
 		cout<<" +---+---+---+---+---+---+---+---+"<<endl;
@@ -75,6 +77,17 @@ void printBoard(){
 	}
 	cout<<" +---+---+---+---+---+---+---+---+"<<endl;
 	return;
+}
+
+void printArray(){//debug purpose function
+	cout<<"\tA\tB\tC\tD\tE\tF\tG\tH"<<endl<<endl;
+	for(int x = 0; x<8;x++){
+		cout<<x+1<<"\t";
+		for(int y = 0; y<8; y++){
+			cout<<board[x][y]<<"\t";
+		}
+		cout<<endl<<endl;
+	}
 }
 
 void input(){
@@ -101,6 +114,10 @@ void input(){
 			character = tolower(character);
 			if(character>=97 && character<=104 && y>=1 && y<=8){
 				valid = true;
+				//cout<<"OUT OF FIRST LOOP!";
+				//system("pause");
+			} else if(y == 22){
+				printArray();//debug
 			} else {
 				system("cls");
 				printBoard();
@@ -112,7 +129,7 @@ void input(){
 		y = --y;
 		//cout<<"X = "<<x<<" and Y = "<<y;
 		//system("pause");
-		if(checkValid(x, y)){
+		if(checkValid(x, y) == 1){
 			valid2 = true;
 		} else {
 			valid = false;
@@ -121,7 +138,7 @@ void input(){
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
-	cout<<"Valid Input!";
+	cout<<"Valid Input!"<<endl;
 	system("pause");
 	system("cls");
 }
@@ -151,15 +168,17 @@ int characterParser(char x){
 }
 
 int checkValid(int x, int y){//this checks if it is valid and directly flips if it is
+	//cout<<"INSIDE CHECK VALID FUNCTION!";
+	//system("pause");
 	int turn = clock%2;//0 = white's turn, 1 = black's turn
 	int overallValid = 0;
 	int enemy = 0;
-	if(turn == 0){
+	if(turn == 0){	
 		enemy = 1;
 	}
 	int x1 = x, y1 = y;
 	bool valid = false;
-	if(board[x][y]==-1){
+	if(board[y][x]==-1){
 		if(--y1>=0){//NORTH
 			if(board[y1][x1] == enemy){
 				while(y1>=0){
@@ -359,10 +378,15 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 			//cout<<"X = "<<x<<" and Y = "<<y;
 			//system("pause");
 		}
+		//cout<<"SUCESSSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
+		//system("pause");
 		return overallValid;
 	} else {
+		//cout<<"NOT EMPTY!aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
+		//system("pause");
 		return 0;
 	}
+	return 0;
 }
 
 
