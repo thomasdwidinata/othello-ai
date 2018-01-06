@@ -29,3 +29,6 @@ v2.1:
 - Added debug mode (enter '22', when number should be entered)
 - Fixed 100% of the swaps, checks.
 - Missing: Winner Counter.
+
+v2.2:
+- Added Winner Counter.

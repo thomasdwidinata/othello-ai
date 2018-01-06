@@ -11,6 +11,7 @@ void printArray();//debug purpose function
 void input();
 int characterParser(char x);
 int checkValid(int x, int y);//this checks if it is valid and directly flips if it is
+void countWinner();
 
 int board[8][8] = 
 {
@@ -40,9 +41,10 @@ int clock = 0;
 
 int main (void){
 	initialize();
-	while(true){
+	while(clock<4){
 		input();
 	}
+	countWinner();
 	return 0;
 }
 
@@ -388,6 +390,39 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 	}
 	return 0;
 }
+
+void countWinner(){
+	int black = 0, white = 0, passive = 0;
+	for(int x = 0; x < 8; x++){
+		for(int y = 0; y < 8; y++){
+			if(board[x][y] == 0){
+				white++;
+			} else if (board[x][y] == 1){
+				black++;
+			} else {
+				passive++;
+			}
+		}
+	}
+	
+	if(black == white){
+		cout<<endl<<"Black = "<<black;
+		cout<<endl<<"White = "<<white;
+		cout<<endl<<"WINNER = TIE!"<<endl;
+		return;
+	}
+	if(black < white){
+		cout<<endl<<"Black = "<<black;
+		cout<<endl<<"WHITE = "<<white;
+		cout<<endl<<"WINNER = WHITE"<<endl;
+	} else {
+		cout<<endl<<"BLACK = "<<black;
+		cout<<endl<<"White = "<<white;
+		cout<<endl<<"WINNER = BLACK"<<endl;
+	}
+	
+}
+
 
 
 
