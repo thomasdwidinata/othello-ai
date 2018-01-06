@@ -24,3 +24,8 @@ v2.0:
 - Othello 80% working swaps, checks.
 - Print on inverted array fixed.
 - All inverted arrays have been fixed.
+
+v2.1:
+- Added debug mode (enter '22', when number should be entered)
+- Fixed 100% of the swaps, checks.
+- Missing: Winner Counter.
