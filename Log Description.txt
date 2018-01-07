@@ -36,5 +36,8 @@ v2.2:
 v2.3:
 - Fixed bug where [-1 0 -1 1] when you place on [1,1] is valid and flips the [1, 2] to be [1, 1, -1, 1]
 
-v2.4:
-- Added possible move function
+v2.4:(Huge Update)
+- Added possible move function.
+
+v2.5:
+- Added real time discs counter.

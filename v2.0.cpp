@@ -74,6 +74,7 @@ void printBoard(){
 	char black = 177;
 	char white = 219;
 	char possible = 248;
+	int numBlack = 0, numWhite = 0;
 	cout<<"CLOCK = \t"<<clock<<endl;
 	cout<<"   A   B   C   D   E   F   G   H  "<<endl;
 	for(int x = 0; x<8; x++){
@@ -82,8 +83,10 @@ void printBoard(){
 		for(int y = 0; y<8; y++){
 			cout<<"| ";
 			if(board[x][y] == 0){
+				numWhite++;
 				cout<<white;
 			} else if (board[x][y] == 1){
+				numBlack++;
 				cout<<black;
 			} else if (board[x][y] == 2) {
 				cout<<possible;
@@ -94,7 +97,8 @@ void printBoard(){
 		}
 		cout<<"|"<<endl;
 	}
-	cout<<" +---+---+---+---+---+---+---+---+"<<endl;
+	cout<<" +---+---+---+---+---+---+---+---+"<<endl<<endl;
+	cout<<"Black  =  "<<numBlack<<"\t\tWhite  =  "<<numWhite<<endl<<endl;
 	return;
 }
 
