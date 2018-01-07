@@ -38,6 +38,10 @@ v2.3:
 
 v2.4:(Huge Update)
 - Added possible move function.
+- Added a new linked list to accomodate possible moves.
+- Possible Moves are displayed on print.
+- Added clear function to clear both printed and linked list.
+- Added function to check if input is on the linked list.
 
 v2.5:
 - Added real time discs counter.
