@@ -13,6 +13,13 @@ int characterParser(char x);
 int checkValid(int x, int y);//this checks if it is valid and directly flips if it is
 void countWinner();
 
+struct possibleMove{
+	int x = 0;
+	int y = 0;
+	struct possibleMove *next;
+	struct possibleMove *prev;
+}*head, *tail, *temp;
+
 int board[8][8] = 
 {
 {-1,-1,-1,-1,-1,-1,-1,-1},
@@ -41,7 +48,7 @@ int clock = 0;
 
 int main (void){
 	initialize();
-	while(clock<4){
+	while(clock<61){
 		input();
 	}
 	countWinner();
@@ -49,6 +56,7 @@ int main (void){
 }
 
 void initialize(){
+	head = tail = temp = NULL;
 	for(int x = 0; x<8; x++){
 		for (int y = 0; y<8; y++){
 			board[x][y] = start[x][y];
@@ -59,6 +67,7 @@ void initialize(){
 void printBoard(){
 	char black = 177;
 	char white = 219;
+	char possible = 248;
 	cout<<"CLOCK = \t"<<clock<<endl;
 	cout<<"   A   B   C   D   E   F   G   H  "<<endl;
 	for(int x = 0; x<8; x++){
@@ -70,6 +79,8 @@ void printBoard(){
 				cout<<white;
 			} else if (board[x][y] == 1){
 				cout<<black;
+			} else if (board[x][y] == 2) {
+				cout<<possible;
 			} else {
 				cout<<" ";
 			}
@@ -169,6 +180,231 @@ int characterParser(char x){
 	return -1;
 }
 
+int availableMove(){//lists all available moves
+	//cout<<"INSIDE CHECK VALID FUNCTION!";
+	//system("pause");
+	int turn = clock%2;//0 = white's turn, 1 = black's turn
+	int overallValid = 0;
+	int enemy = 0;
+	(turn == 0) ? (enemy = 1) : (0);
+	int x1, y1;
+	bool valid = false;
+	for(int x = 0; x < 8; x++){
+		for(int y = 0; y < 8; y++){
+			x1 = x; y1 = y;
+			if(board[y][x]==-1){
+				if(--y1>=0){//NORTH
+					if(board[y1][x1] == enemy){
+						while(y1>=0 && board[y1][x1] != -1){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1--;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1--;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1--;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(--y1>=0 && ++x1<=8){//NORTH EAST
+					if(board[y1][x1] == enemy){
+						while(y1>=0 && x1<=8){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1--;
+							x1++;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1--;
+							x1++;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1--;
+								x1++;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(++x1<=8){//EAST
+					if(board[y1][x1] == enemy){
+						while(x1<=8){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							x1++;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							x1++;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								x1++;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(++y1<=8 && ++x1<=8){//SOUTH EAST
+					if(board[y1][x1] == enemy){
+						while(y1<=8 && x1<=8){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1++;
+							x1++;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1++;
+							x1++;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1++;
+								x1++;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(++y1<=8){//SOUTH
+					if(board[y1][x1] == enemy){
+						while(y1<=8){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1++;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1++;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1++;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(++y1<=8 && --x1>=0){//SOUTH WEST
+					if(board[y1][x1] == enemy){
+						while(y1<=8 && x1>= 0){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1++;
+							x1--;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1++;
+							x1--;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1++;
+								x1--;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(--x1>=0){//WEST
+					if(board[y1][x1] == enemy){
+						while(x1>= 0){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							x1--;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							x1--;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								x1--;
+							}
+						}
+					}
+				}
+				x1 = x, y1 = y;
+				valid = false;
+				if(--y1>=0 && --x1>=0){//NORTH WEST
+					if(board[y1][x1] == enemy){
+						while(y1>=0 && x1>= 0){
+							if(board[y1][x1] == turn){
+								valid = true;
+								overallValid = 1;
+								break;
+							}
+							y1--;
+							x1--;
+						}
+						if(valid == true){
+							x1 = x;
+							y1 = y;
+							y1--;
+							x1--;
+							while(board[y1][x1] == enemy){
+								board[y1][x1] = turn;
+								y1--;
+								x1--;
+							}
+						}
+					}
+				}
+				if(overallValid == 1){
+					board[y][x] = turn;
+					//cout<<"X = "<<x<<" and Y = "<<y;
+					//system("pause");
+				}
+				//cout<<"SUCESSSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
+				//system("pause");
+				return overallValid;
+			} else {
+				//cout<<"NOT EMPTY!aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
+				//system("pause");
+				return 0;
+			}
+		}
+	}
+	return 0;
+}
+
 int checkValid(int x, int y){//this checks if it is valid and directly flips if it is
 	//cout<<"INSIDE CHECK VALID FUNCTION!";
 	//system("pause");
@@ -183,7 +419,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 	if(board[y][x]==-1){
 		if(--y1>=0){//NORTH
 			if(board[y1][x1] == enemy){
-				while(y1>=0){
+				while(y1>=0 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -206,7 +442,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(--y1>=0 && ++x1<=8){//NORTH EAST
 			if(board[y1][x1] == enemy){
-				while(y1>=0 && x1<=8){
+				while(y1>=0 && x1<=8 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -232,7 +468,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(++x1<=8){//EAST
 			if(board[y1][x1] == enemy){
-				while(x1<=8){
+				while(x1<=8 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -255,7 +491,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(++y1<=8 && ++x1<=8){//SOUTH EAST
 			if(board[y1][x1] == enemy){
-				while(y1<=8 && x1<=8){
+				while(y1<=8 && x1<=8 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -281,7 +517,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(++y1<=8){//SOUTH
 			if(board[y1][x1] == enemy){
-				while(y1<=8){
+				while(y1<=8 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -304,7 +540,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(++y1<=8 && --x1>=0){//SOUTH WEST
 			if(board[y1][x1] == enemy){
-				while(y1<=8 && x1>= 0){
+				while(y1<=8 && x1>= 0 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -330,7 +566,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(--x1>=0){//WEST
 			if(board[y1][x1] == enemy){
-				while(x1>= 0){
+				while(x1>= 0 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
@@ -353,7 +589,7 @@ int checkValid(int x, int y){//this checks if it is valid and directly flips if 
 		valid = false;
 		if(--y1>=0 && --x1>=0){//NORTH WEST
 			if(board[y1][x1] == enemy){
-				while(y1>=0 && x1>= 0){
+				while(y1>=0 && x1>= 0 && board[y1][x1] != -1){
 					if(board[y1][x1] == turn){
 						valid = true;
 						overallValid = 1;
