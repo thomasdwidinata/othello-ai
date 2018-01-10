@@ -253,7 +253,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(--y1>=0 && ++x1<=8){//NORTH EAST
 					if(board[y1][x1] == enemy){
-						while(y1>=0 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1>=0 && x1<=8 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -268,7 +268,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(++x1<=8){//EAST
 					if(board[y1][x1] == enemy){
-						while(x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(x1<=8 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -282,7 +282,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(++y1<=8 && ++x1<=8){//SOUTH EAST
 					if(board[y1][x1] == enemy){
-						while(y1<=8 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && x1<=8 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -297,7 +297,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(++y1<=8){//SOUTH
 					if(board[y1][x1] == enemy){
-						while(y1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -311,7 +311,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(++y1<=8 && --x1>=0){//SOUTH WEST
 					if(board[y1][x1] == enemy){
-						while(y1<=8 && x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && x1>= 0 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -326,7 +326,7 @@ int availableMove(){//lists all available moves
 				x1 = x, y1 = y;
 				if(--x1>=0){//WEST
 					if(board[y1][x1] == enemy){
-						while(x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+						while(x1>= 0 && board[y1][x1] != -1){
 							if(board[y1][x1] == turn){
 								overallValid = 1;
 								board[y][x] = 2;
@@ -377,7 +377,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	board[y][x] = turn;
 	if(--y1>=0){//NORTH
 		if(board[y1][x1] == enemy){
-			while(y1>=0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1>=0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -399,7 +399,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(--y1>=0 && ++x1<=8){//NORTH EAST
 		if(board[y1][x1] == enemy){
-			while(y1>=0 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1>=0 && x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -424,7 +424,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(++x1<=8){//EAST
 		if(board[y1][x1] == enemy){
-			while(x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -446,7 +446,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(++y1<=8 && ++x1<=8){//SOUTH EAST
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -471,7 +471,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(++y1<=8){//SOUTH
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -493,7 +493,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(++y1<=8 && --x1>=0){//SOUTH WEST
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -518,7 +518,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(--x1>=0){//WEST
 		if(board[y1][x1] == enemy){
-			while(x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -540,7 +540,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	valid = false;
 	if(--y1>=0 && --x1>=0){//NORTH WEST
 		if(board[y1][x1] == enemy){
-			while(y1>=0 && x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1>=0 && x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -576,8 +576,6 @@ void countWinner(){
 			}
 		}
 	}
-	
-	printBoard();
 	
 	if(black == white){
 		cout<<endl<<"Black = "<<black;
@@ -715,8 +713,6 @@ void expandWeight(){
 	weight[3][3] = weight[3][4] = weight[4][4] = weight[4][3] = smallWeight[3][3];
 }
 
-//int test = 0, test2 =0;
-
 int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and 1 is foe
 	int counter = 0;
 	
@@ -756,10 +752,6 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 				}
 			}
 			int* v = minimax(tempBoardBarbaric, depth-1, turn-1);
-//			if(clock == 17){
-//				test++;
-//				cout<<"Test = "<<test<<endl;
-//			}
 			if(v[0] < bestValue[0]){
 				bestValue[0] = v[0];
 				if(depth == depthFixed){
@@ -769,21 +761,6 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 //					system("pause");
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-//			if(test >= 900){
-//				for(int ab = 0; ab<20; ab++){
-//					cout<<"X = "<<moves[ab][0]<<", Y = "<<moves[ab][1]<<endl;
-//				}
-//				cout<<"Last Move Selected = x: "<<moves[counter][0]<<", y: "<<moves[counter][1]<<endl;
-//				system("pause");
-//			}
 			counter++;
 		}
 		return bestValue;
@@ -804,10 +781,6 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 				}
 			}
 			int* v = minimax(tempBoardBarbaric, depth-1, turn+1);
-//			if(clock == 17){
-//				test2++;
-//				cout<<"Test2 = "<<test2<<endl;
-//			}
 			if(v[0] > bestValue[0]){
 				bestValue[0] = v[0];
 				if(depth == depthFixed){
@@ -854,8 +827,6 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 	(turn == 0) ? (enemy = 1) : (0);
 	int x1, y1;
 	
-	int i = 0;
-	
 //	cout<<endl<<endl;
 //	for(int i = 0; i<8; i++){
 //		for(int j = 0; j<8; j++){
@@ -870,19 +841,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 			if(board[y][x]==-1 || board[y][x]==2){
 				if(--y1>=0){//NORTH
 					if(simulation[y1][x1] == enemy){
-						while(y1>=0 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1>=0 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1--;
@@ -892,19 +855,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(--y1>=0 && ++x1<=8){//NORTH EAST
 					if(simulation[y1][x1] == enemy){
-						while(y1>=0 && x1<=8 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1>=0 && x1<=8 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1--;
@@ -915,19 +870,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(++x1<=8){//EAST
 					if(simulation[y1][x1] == enemy){
-						while(x1<=8 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(x1<=8 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							x1++;
@@ -937,19 +884,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(++y1<=8 && ++x1<=8){//SOUTH EAST
 					if(simulation[y1][x1] == enemy){
-						while(y1<=8 && x1<=8 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && x1<=8 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1++;
@@ -960,19 +899,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(++y1<=8){//SOUTH
 					if(simulation[y1][x1] == enemy){
-						while(y1<=8 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1++;
@@ -982,19 +913,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(++y1<=8 && --x1>=0){//SOUTH WEST
 					if(simulation[y1][x1] == enemy){
-						while(y1<=8 && x1>= 0 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1<=8 && x1>= 0 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1++;
@@ -1005,19 +928,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(--x1>=0){//WEST
 					if(simulation[y1][x1] == enemy){
-						while(x1>= 0 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(x1>= 0 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							x1--;
@@ -1027,19 +942,11 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 				x1 = x, y1 = y;
 				if(--y1>=0 && --x1>=0){//NORTH WEST
 					if(simulation[y1][x1] == enemy){
-						while(y1>=0 && x1>= 0 && simulation[y1][x1] != -1 && board[y1][x1] !=2){
+						while(y1>=0 && x1>= 0 && simulation[y1][x1] != -1){
 							if(simulation[y1][x1] == turn){
-								while(i<=20){
-									if(result[i][0] == x && result[i][1] == y){
-										break;
-									} else if(result[i][0] == -1){
-										result[total][0] = x;
-										result[total][1] = y;
-										total++;
-										break;
-									}
-									i++;
-								}
+								result[total][0] = x;
+								result[total][1] = y;
+								total++;
 								break;
 							}
 							y1--;
@@ -1103,7 +1010,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(--y1>=0 && ++x1<=8){//NORTH EAST
 		if(board[y1][x1] == enemy){
-			while(y1>=0 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1>=0 && x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1128,7 +1035,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(++x1<=8){//EAST
 		if(board[y1][x1] == enemy){
-			while(x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1150,7 +1057,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(++y1<=8 && ++x1<=8){//SOUTH EAST
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && x1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && x1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1175,7 +1082,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(++y1<=8){//SOUTH
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1197,7 +1104,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(++y1<=8 && --x1>=0){//SOUTH WEST
 		if(board[y1][x1] == enemy){
-			while(y1<=8 && x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1<=8 && x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1222,7 +1129,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(--x1>=0){//WEST
 		if(board[y1][x1] == enemy){
-			while(x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1244,7 +1151,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	valid = false;
 	if(--y1>=0 && --x1>=0){//NORTH WEST
 		if(board[y1][x1] == enemy){
-			while(y1>=0 && x1>= 0 && board[y1][x1] != -1 && board[y1][x1] !=2){
+			while(y1>=0 && x1>= 0 && board[y1][x1] != -1){
 				if(board[y1][x1] == turn){
 					valid = true;
 					break;
@@ -1298,7 +1205,6 @@ void autoTrainAI(){//AI vs AI
 		aiMove();
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
-		
 		
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
