@@ -45,3 +45,6 @@ v2.4:(Huge Update)
 
 v2.5:
 - Added real time discs counter.
+
+v3.0:
+- AI Ready, crashes at around 10-17 moves.
