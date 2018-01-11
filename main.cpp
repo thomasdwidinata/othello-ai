@@ -10,7 +10,8 @@ using namespace std;
 void initialize();
 void printBoard();
 void printArray();//debug purpose function
-void input();
+void twoPlayerMode();//Player Vs Player Mode
+void vsAIWhite();
 int characterParser(char x);
 int availableMove();//lists all available moves
 void flipAction(int x, int y);//flips chosen moves
@@ -72,8 +73,9 @@ int main (void){
 	initialize();
 	clock++;
 	while(availableMove()){
-//		input();
-		autoTrainAI();
+		twoPlayerMode();
+//		vsAIWhite();
+//		autoTrainAI();
 		clock++;
 	}
 	countWinner();
@@ -140,7 +142,62 @@ void printArray(){//debug purpose function
 	}
 }
 
-void input(){
+void twoPlayerMode(){//Player Vs Player Mode
+	int turn = clock%2;//0 = white's turn, 1 = black's turn
+	char character;
+	int x, y;
+	bool valid2 = false;//check for valid position input
+	bool valid = false;//check for valid input;
+	printBoard();
+	while(valid2 == false){
+		while(valid == false) {
+			cout<<"================================================="<<endl;
+			if(turn == 0){
+				cout<<"WHITE PLAYER'S TURN!"<<endl;
+			} else {
+				cout<<"BLACK PLAYER'S TURN!"<<endl;
+			}
+			cout<<"================================================="<<endl;
+			cout<<"Input Column (A-H) :";
+			cin>>character;
+			cout<<"Input Row (1-8) :";
+			cin>>y;
+			character = tolower(character);
+			if(character>=97 && character<=104 && y>=1 && y<=8){
+				valid = true;
+				//cout<<"OUT OF FIRST LOOP!";
+				//system("pause");
+			} else if(y == 22){
+				printArray();//debug
+			} else {
+				system("cls");
+				printBoard();
+				cout<<"INVALID INPUT!"<<endl;
+			}
+		}
+		x = characterParser(character);
+		y = --y;
+		
+//		cout<<"X = "<<x<<" and Y = "<<y;
+//		system("pause");
+		
+		if(checkValid(x, y)){
+			valid2 = true;
+			flipAction(x, y);
+		} else {
+			valid = false;
+			system("cls");
+			printBoard();
+			cout<<"INVALID POSITION!"<<endl;
+		}
+	}
+	clearPossible();
+	cout<<"Valid Input!"<<endl;
+//	system("pause");
+	system("cls");
+}
+
+void vsAIWhite(){
 	int turn = clock%2;//0 = white's turn, 1 = black's turn
 	char character;
 	int x, y;
