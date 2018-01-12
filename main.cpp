@@ -73,9 +73,9 @@ int main (void){
 	initialize();
 	clock++;
 	while(availableMove()){
-		twoPlayerMode();
+//		twoPlayerMode();
 //		vsAIWhite();
-//		autoTrainAI();
+		autoTrainAI();
 		clock++;
 	}
 	countWinner();
@@ -1356,6 +1356,10 @@ void autoTrainAI(){//AI vs AI
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
 		
+		if(clock == 23){
+			cout<<"X = "<<x<<" and Y = "<<y;
+			system("pause");
+		}
 		
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");

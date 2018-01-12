@@ -51,6 +51,6 @@ v3.0:
 
 v3.1:
 - AI vs AI works till finish.
-
-v3.2:
+ 
+v3.2: 
 - 2 Player Mode (PvP) added.
