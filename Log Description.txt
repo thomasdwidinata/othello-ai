@@ -54,3 +54,7 @@ v3.1:
  
 v3.2: 
 - 2 Player Mode (PvP) added.
+
+v4.0:
+- AI learning mechanism is ready.
+- Few bugs that causes program to turn error.
