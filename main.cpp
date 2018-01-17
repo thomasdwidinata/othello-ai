@@ -923,8 +923,8 @@ int evaluateBoard(int simulation[8][8], int turn){
 
 int** availableMoveSimulation(int simulation[8][8], int turn){//lists all available moves for the simulation
 	int** result = 0;
-	result = new int*[20];
-	for(int x = 0; x<20; x++){
+	result = new int*[50];
+	for(int x = 0; x<50; x++){
 		result[x] = new int [2];
 		for(int y = 0; y<2; y++){
 			result[x][y] = -1;
