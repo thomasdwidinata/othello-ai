@@ -15,7 +15,6 @@
 #include <cmath>
 #include <ctime>
 
-#include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -62,6 +61,7 @@ using namespace std;
     #elif TARGET_OS_IPHONE
         #error "Unsupported: iOS. This library is not indended to run on this OS."
     #elif TARGET_OS_MAC
+	    #include <termios.h>
         void system_pause()
         {
             printf("Press any key to continue...");
@@ -71,10 +71,38 @@ using namespace std;
         {
             system("clear");
         }
+        bool kbhit(void)
+		{
+		    struct termios oldt, newt;
+		    int ch;
+		    int oldf;
+		
+		    tcgetattr(STDIN_FILENO, &oldt);
+		    newt = oldt;
+		    newt.c_lflag &= ~(ICANON | ECHO);
+		    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+		    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+		    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+		
+		    ch = getchar();
+		
+		    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+		    fcntl(STDIN_FILENO, F_SETFL, oldf);
+		
+		    if(ch != EOF)
+		    {
+		        ungetc(ch, stdin);
+		        return true;
+		    }
+		
+		    return false;
+		}
     #else
         #error "Unsupported: Unknown Apple Product. This library is not indended to run on this OS."
     #endif
 #elif __linux__
+
+	#include <termios.h>
     void system_pause()
     {
         printf("Press enter to continue...");
@@ -84,6 +112,32 @@ using namespace std;
     {
         system("clear");
     }
+    bool kbhit(void)
+	{
+	    struct termios oldt, newt;
+	    int ch;
+	    int oldf;
+	
+	    tcgetattr(STDIN_FILENO, &oldt);
+	    newt = oldt;
+	    newt.c_lflag &= ~(ICANON | ECHO);
+	    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+	    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+	
+	    ch = getchar();
+	
+	    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	    fcntl(STDIN_FILENO, F_SETFL, oldf);
+	
+	    if(ch != EOF)
+	    {
+	        ungetc(ch, stdin);
+	        return true;
+	    }
+	
+	    return false;
+	}
 #elif __unix__ // all unices not caught above
     #error "Unsupported: UNIX. This library is not indended to run on this OS."
 #elif defined(_POSIX_VERSION)
@@ -107,32 +161,7 @@ int scanNumber() // Input sanitiser to make sure that user inputs only numbers, 
     return choice;
 }
 
-bool kbhit(void)
-{
-    struct termios oldt, newt;
-    int ch;
-    int oldf;
 
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-
-    ch = getchar();
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
-
-    if(ch != EOF)
-    {
-        ungetc(ch, stdin);
-        return true;
-    }
-
-    return false;
-}
 
 void initRandomiser()
 {

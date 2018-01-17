@@ -5,6 +5,7 @@
 #include <cstring>
 #include <limits.h>
 #include <ctime>
+#include "unnamed-library.cpp"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ void printBoard();
 void printArray();//debug purpose function
 void twoPlayerMode();//Player Vs Player Mode
 void vsAIWhite();
+void vsAIBlack();
 int characterParser(char x);
 int availableMove();//lists all available moves
 void flipAction(int x, int y);//flips chosen moves
@@ -38,6 +40,7 @@ void trainAI();
 void determineNewWeight(int winner);
 void countWinnerTraining();
 void printWeight();
+void initializeNewTraining();
 
 struct possibleMove{
 	int x = 0;
@@ -85,33 +88,109 @@ int depthFixed = 3;
 float modifyGap = 0.5;
 int clockT = 0;
 
+int numOfTraining = 0;
+int counterWrite = 0;
+
 int main (void){
-//	initialize();
-//	clockT++;
-//	while(availableMove()){
+//	while(true){
+//		int choice = 0, choice1 = 0;
+//		initialize();
+//		cout<<"Othello AI"<<endl
+//		<<"Made By: Andre Valentino, Fenbert, Thomas Dwi Dinata"<<endl
+//		<<"Choice:"<<endl
+//		<<"1)Versus AI"<<endl
+//		<<"2)2 Player Mode"<<endl
+//		<<"3)Train The AI"<<endl
+//		<<"4)Exit"<<endl
+//		<<"Choose : ";
+//		cin>>choice;
+//		switch(choice){
+//			case 1:
+//				while(choice!=4){
+//					cout<<endl<<endl<<"1)Player vs White AI (1st Turn)"<<endl
+//					<<"2)Player vs Black AI(2nd Turn)"<<endl
+//					<<"3)Random"<<endl
+//					<<"4)Cancel"<<endl
+//					<<"Choose: ";
+//					cin>>choice1;
+//					if(choice1 == 1){
+//						vsAIWhite();
+//					} else if (choice1 == 2){
+//						vsAIBlack();
+//					} else if (choice1 == 3){
+//						randomise(0,1);
+//					} else if(choice1 == 4){
+//						break;
+//					} else {
+//						cout<<"Wrong Choice! (1-4 Only!)";
+//						system("pause");
+//						system("cls");
+//					}
+//				}
+//				break;
+//			case 2:
+//				twoPlayerMode();
+//				break;
+//			case 3:
+//				cout<<"Number of Training Iterations(-1 to cancel) :";
+//				cin>>choice1;
+//				if(choice1<0){
+//					break;
+//				}
+//				while(numOfTraining<choice1){
+//					modifyTraining();
+//					clockT++;
+//					while(availableMove()){
+//						trainAI();
+//						clockT++;
+//					}
+//					countWinnerTraining();
+//					numOfTraining++;
+//					printf("%d\n", numOfTraining);
+//					initializeNewTraining();
+//				}
+//				break;
+//			case 4:
+//				system("cls");
+//				cout<<"Thank You for using the othello AI program! Have a great day!";
+//				break;
+//			default:
+//				cout<<"Wrong Input! Try Again!";
+//				system("pause");
+//				system("cls");
+//				break;
+//		}
+//	}
+	initialize();
+	clockT++;
+	while(availableMove()){
 //		twoPlayerMode();
 //		vsAIWhite();
-//		autoMoveAI();
-//		clockT++;
-//	}
-//	countWinner();
-	while(true){
-		initialize();
-		modifyTraining();
-//		printWeight();
+		vsAIBlack();
 		clockT++;
-		while(availableMove()){
-			trainAI();
-			clockT++;
-		}
-		countWinnerTraining();
 	}
+	countWinner();
+//	while(numOfTraining<100){
+//		modifyTraining();
+//		clockT++;
+//		while(availableMove()){
+//			trainAI();
+//			clockT++;
+//		}
+//		countWinnerTraining();
+//		numOfTraining++;
+//		printf("%d\n", numOfTraining);
+//		initializeNewTraining();
+//	}
+	system("pause");
 	return 0;
 }
 
 void initialize(){
+	numOfTraining = 0;
+	srand(time(NULL));
 	clockT = 0;
-	head = tail = temp = NULL;
+	clearPossible();
 	for(int x = 0; x<8; x++){
 		for (int y = 0; y<8; y++){
 			board[x][y] = start[x][y];
@@ -239,6 +318,67 @@ void vsAIWhite(){
 	printBoard();
 	while(valid2 == false){
 		if(turn == 1){
+			while(valid == false) {
+				cout<<"================================================="<<endl;
+				if(turn == 0){
+					cout<<"WHITE PLAYER'S TURN!"<<endl;
+				} else {
+					cout<<"BLACK PLAYER'S TURN!"<<endl;
+				}
+				cout<<"================================================="<<endl;
+				cout<<"Input Column (A-H) :";
+				cin>>character;
+				cout<<"Input Row (1-8) :";
+				cin>>y;
+				character = tolower(character);
+				if(character>=97 && character<=104 && y>=1 && y<=8){
+					valid = true;
+					//cout<<"OUT OF FIRST LOOP!";
+					//system("pause");
+				} else if(y == 22){
+					printArray();//debug
+				} else {
+					system("cls");
+					printBoard();
+					cout<<"INVALID INPUT!"<<endl;
+				}
+			}
+			x = characterParser(character);
+			y = --y;
+		} else {
+			aiMove();
+			x = bestCoordinate[0];
+			y = bestCoordinate[1];
+		}
+		
+//		cout<<"X = "<<x<<" and Y = "<<y;
+//		system("pause");
+		
+		if(checkValid(x, y)){
+			valid2 = true;
+			flipAction(x, y);
+		} else {
+			valid = false;
+			system("cls");
+			printBoard();
+			cout<<"INVALID POSITION!"<<endl;
+		}
+	}
+	clearPossible();
+	cout<<"Valid Input!"<<endl;
+//	system("pause");
+	system("cls");
+}
+
+void vsAIBlack(){
+	int turn = clockT%2;//0 = white's turn, 1 = black's turn
+	char character;
+	int x, y;
+	bool valid2 = false;//check for valid position input
+	bool valid = false;//check for valid input;
+	printBoard();
+	while(valid2 == false){
+		if(turn == 0){
 			while(valid == false) {
 				cout<<"================================================="<<endl;
 				if(turn == 0){
@@ -765,7 +905,7 @@ void readTraining(){
 //    		cout<<smallWeight[y][x]<<" ";
     		//system("pause");
 		}
-		cout<<endl;
+//		cout<<endl;
 	}
 	fclose(fp);
 }
@@ -1406,50 +1546,6 @@ void autoMoveAI(){//AI vs AI
 	system("cls");
 }
 
-//void expandWeightSim(){
-//	weightSim[0][0] = weightSim[0][7] = weightSim[7][7] = weightSim[7][0] = smallWeightSim[0][0];
-//	weightSim[0][1] = weightSim[1][7] = weightSim[7][6] = weightSim[6][0] = smallWeightSim[0][1];
-//	weightSim[0][2] = weightSim[2][7] = weightSim[7][5] = weightSim[5][0] = smallWeightSim[0][2];
-//	weightSim[0][3] = weightSim[3][7] = weightSim[7][4] = weightSim[4][0] = smallWeightSim[0][3];
-//	
-//	weightSim[1][0] = weightSim[0][6] = weightSim[6][7] = weightSim[7][1] = smallWeightSim[1][0];
-//	weightSim[1][1] = weightSim[1][6] = weightSim[6][6] = weightSim[6][1] = smallWeightSim[1][1];
-//	weightSim[1][2] = weightSim[2][6] = weightSim[6][5] = weightSim[5][1] = smallWeightSim[1][2];
-//	weightSim[1][3] = weightSim[3][6] = weightSim[6][4] = weightSim[4][1] = smallWeightSim[1][3];
-//	
-//	weightSim[2][0] = weightSim[0][5] = weightSim[5][7] = weightSim[7][2] = smallWeightSim[2][0];
-//	weightSim[2][1] = weightSim[1][5] = weightSim[5][6] = weightSim[6][2] = smallWeightSim[2][1];
-//	weightSim[2][2] = weightSim[2][5] = weightSim[5][5] = weightSim[5][2] = smallWeightSim[2][2];
-//	weightSim[2][3] = weightSim[3][5] = weightSim[5][4] = weightSim[4][2] = smallWeightSim[2][3];
-//	
-//	weightSim[3][0] = weightSim[0][4] = weightSim[4][7] = weightSim[7][3] = smallWeightSim[3][0];
-//	weightSim[3][1] = weightSim[1][4] = weightSim[4][6] = weightSim[6][3] = smallWeightSim[3][1];
-//	weightSim[3][2] = weightSim[2][4] = weightSim[4][5] = weightSim[5][3] = smallWeightSim[3][2];
-//	weightSim[3][3] = weightSim[3][4] = weightSim[4][4] = weightSim[4][3] = smallWeightSim[3][3];
-//}
-//
-//void expandWeightSim1(){
-//	weightSim1[0][0] = weightSim1[0][7] = weightSim1[7][7] = weightSim1[7][0] = smallWeightSim1[0][0];
-//	weightSim1[0][1] = weightSim1[1][7] = weightSim1[7][6] = weightSim1[6][0] = smallWeightSim1[0][1];
-//	weightSim1[0][2] = weightSim1[2][7] = weightSim1[7][5] = weightSim1[5][0] = smallWeightSim1[0][2];
-//	weightSim1[0][3] = weightSim1[3][7] = weightSim1[7][4] = weightSim1[4][0] = smallWeightSim1[0][3];
-//	
-//	weightSim1[1][0] = weightSim1[0][6] = weightSim1[6][7] = weightSim1[7][1] = smallWeightSim1[1][0];
-//	weightSim1[1][1] = weightSim1[1][6] = weightSim1[6][6] = weightSim1[6][1] = smallWeightSim1[1][1];
-//	weightSim1[1][2] = weightSim1[2][6] = weightSim1[6][5] = weightSim1[5][1] = smallWeightSim1[1][2];
-//	weightSim1[1][3] = weightSim1[3][6] = weightSim1[6][4] = weightSim1[4][1] = smallWeightSim1[1][3];
-//	
-//	weightSim1[2][0] = weightSim1[0][5] = weightSim1[5][7] = weightSim1[7][2] = smallWeightSim1[2][0];
-//	weightSim1[2][1] = weightSim1[1][5] = weightSim1[5][6] = weightSim1[6][2] = smallWeightSim1[2][1];
-//	weightSim1[2][2] = weightSim1[2][5] = weightSim1[5][5] = weightSim1[5][2] = smallWeightSim1[2][2];
-//	weightSim1[2][3] = weightSim1[3][5] = weightSim1[5][4] = weightSim1[4][2] = smallWeightSim1[2][3];
-//	
-//	weightSim1[3][0] = weightSim1[0][4] = weightSim1[4][7] = weightSim1[7][3] = smallWeightSim1[3][0];
-//	weightSim1[3][1] = weightSim1[1][4] = weightSim1[4][6] = weightSim1[6][3] = smallWeightSim1[3][1];
-//	weightSim1[3][2] = weightSim1[2][4] = weightSim1[4][5] = weightSim1[5][3] = smallWeightSim1[3][2];
-//	weightSim1[3][3] = weightSim1[3][4] = weightSim1[4][4] = weightSim1[4][3] = smallWeightSim1[3][3];
-//}
-
 void simulationToWeight(){
 	for(int i = 0; i<4; i++){
 		for(int j = 0; j<4; j++){
@@ -1471,7 +1567,6 @@ void simulation1ToWeight(){
 }
 
 void modifyTraining(){
-	srand(time(NULL));
 	for(int i = 0; i<4; i++){
 		for(int j = 0; j<4; j++){
 			(rand()%2 == 0) ? smallWeightSim1[i][j] += modifyGap : smallWeightSim1[i][j] -= modifyGap;
@@ -1488,18 +1583,18 @@ void trainAI(){
 	int x, y;
 	bool valid2 = false;//check for valid position input
 	bool valid = false;//check for valid input;
-	printBoard();
+//	printBoard();
 	
 	while(valid2 == false){
 		(turn == 1) ? simulation1ToWeight() : simulationToWeight();
 //		printWeight();
-		cout<<"================================================="<<endl;
-		if(turn == 0){
-			cout<<"WHITE PLAYER'S TURN!"<<endl;
-		} else {
-			cout<<"BLACK PLAYER'S TURN!"<<endl;
-		}
-		cout<<"================================================="<<endl;
+//		cout<<"================================================="<<endl;
+//		if(turn == 0){
+//			cout<<"WHITE PLAYER'S TURN!"<<endl;
+//		} else {
+//			cout<<"BLACK PLAYER'S TURN!"<<endl;
+//		}
+//		cout<<"================================================="<<endl;
 		
 //		if(clockT >= 21){
 //			cout<<"X = "<<x<<" and Y = "<<y;
@@ -1518,6 +1613,7 @@ void trainAI(){
 			flipAction(x, y);
 		} else {
 			valid = false;
+			system("pause");
 			system("cls");
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
@@ -1526,16 +1622,20 @@ void trainAI(){
 	clearPossible();
 //	cout<<"Valid Input!"<<endl;
 //	system("pause");
-	system("cls");
+//	system("cls");
 }
 
 void determineNewWeight(int winner){
+	counterWrite++;
 	if(winner == 1){
 		simulation1ToWeight();
 	} else {
 		simulationToWeight();
 	}
-	writeTraining();
+	if(counterWrite > 99){
+		counterWrite = 0;
+		writeTraining();
+	}
 }
 
 void countWinnerTraining(){
@@ -1552,23 +1652,24 @@ void countWinnerTraining(){
 		}
 	}
 	
-	printBoard();
+//	printBoard();
 	
 	if(black == white){
-		cout<<endl<<"Black = "<<black;
-		cout<<endl<<"White = "<<white;
-		cout<<endl<<"WINNER = TIE!"<<endl;
+//		cout<<endl<<"Black = "<<black;
+//		cout<<endl<<"White = "<<white;
+//		cout<<endl<<"WINNER = TIE!"<<endl;
+		determineNewWeight(0);
 		return;
 	}
 	if(black < white){
-		cout<<endl<<"Black = "<<black;
-		cout<<endl<<"WHITE = "<<white;
-		cout<<endl<<"WINNER = WHITE"<<endl;
+//		cout<<endl<<"Black = "<<black;
+//		cout<<endl<<"WHITE = "<<white;
+//		cout<<endl<<"WINNER = WHITE"<<endl;
 		determineNewWeight(0);
 	} else {
-		cout<<endl<<"BLACK = "<<black;
-		cout<<endl<<"White = "<<white;
-		cout<<endl<<"WINNER = BLACK"<<endl;
+//		cout<<endl<<"BLACK = "<<black;
+//		cout<<endl<<"White = "<<white;
+//		cout<<endl<<"WINNER = BLACK"<<endl;
 		determineNewWeight(1);
 	}
 }
@@ -1583,7 +1684,21 @@ void printWeight(){
 	system("pause");
 }
 
-
+void initializeNewTraining(){
+	clockT = 0;
+	clearPossible();
+	for(int x = 0; x<8; x++){
+		for (int y = 0; y<8; y++){
+			board[x][y] = start[x][y];
+		}
+	}
+	for(int i = 0; i<4; i++){
+		for(int j = 0; j<4; j++){
+			smallWeightSim[i][j] = smallWeightSim1[i][j] = smallWeight[i][j];
+		}
+	}
+	expandWeight();
+}
 
 
 
