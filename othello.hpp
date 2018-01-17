@@ -103,10 +103,10 @@ int counterWrite = 0;
 
 void startup()
 {
-	printf(BOLDCYAN APP_NAME RESETCOLOUR);
+	printf(APP_NAME);
 	printf("\n");
 	printf(APP_VERSION);
 	printf("\n");
-	printf(BOLDMAGENTA APP_DEVELOPER RESETCOLOUR);
+	printf(APP_DEVELOPER);
 	printf("\n");
 }

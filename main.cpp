@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
 	{
 		initialize();
 		startup();
-		printf("Welcome to " BOLDCYAN "Othello AI"RESETCOLOUR" Program, please choose a menu:\n");
+		printf("Welcome to Othello AI Program, please choose a menu:\n");
 		printf("\t1) Player VS AI\n");
 		printf("\t2) 2 Player Mode\n");
 		printf("\t3) AI Training\n");
