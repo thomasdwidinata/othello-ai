@@ -1498,9 +1498,9 @@ void trainAI(){
 	bool valid = false;//check for valid input;
 	printBoard();
 	
-	
 	while(valid2 == false){
 		(turn == 1) ? simulation1ToWeight() : simulationToWeight();
+//		printWeight();
 		cout<<"================================================="<<endl;
 		if(turn == 0){
 			cout<<"WHITE PLAYER'S TURN!"<<endl;
@@ -1513,7 +1513,7 @@ void trainAI(){
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
 		
-//		if(clockT == 50 || clockT == 49){
+//		if(clockT > 33){
 //			cout<<"X = "<<x<<" and Y = "<<y;
 //			system("pause");
 //		}
@@ -1590,6 +1590,10 @@ void printWeight(){
 	}
 	system("pause");
 }
+
+
+
+
 
 
 

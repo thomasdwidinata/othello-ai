@@ -23,7 +23,7 @@ int checkValid(int x, int y);//CHECKS IF THE INPUT IS AVAILABLE IN POSSIBLE MOVE
 void readTraining();
 void writeTraining();
 void expandWeight();
-int* minimax(int simulation[8][8], int depth, bool maximizingPlayer);
+int minimax(int simulation[8][8], int depth, bool maximizingPlayer);
 int evaluateBoard(int simulation[8][8], int turn);
 int** availableMoveSimulation(int simulation[8][8], int turn);//lists all available moves for the simulation
 int** processMoveSimulation(int board[8][8], int x, int y, int turn);//flips available move on the certain simulation
@@ -82,7 +82,7 @@ float weightSim1[8][8];
 int bestCoordinate[2];
 
 int depthFixed = 3;
-float modifyGap = 0.1;
+float modifyGap = 0.5;
 int clockT = 0;
 
 int main (void){
@@ -806,10 +806,10 @@ void expandWeight(){
 
 //int test = 0, test2 =0;
 
-int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and 1 is foe
+int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and 1 is foe
 	int counter = 0;
 	
-	int evaluated[2] = {-1, -1};
+	int evaluated = -1;
 	
 	int** tempBoard = 0;
 	tempBoard = new int*[8];
@@ -823,11 +823,11 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 	int tempBoardBarbaric[8][8];
 	
 	if(depth == 0){
-		evaluated[0] = evaluateBoard(simulation, turn);
+		evaluated = evaluateBoard(simulation, turn);
 		return evaluated;
 	}
 	if(turn == 1){//assume 1 is enemy, so we want the minimum for enemy
-		int bestValue[2] = {INT_MAX, -1};
+		int bestValue = INT_MAX;
 		int** moves = availableMoveSimulation(simulation, turn);
 //		cout<<"Moves"<<moves[0][0]<<" ------ "<<moves[0][1];
 //		system("pause");
@@ -844,13 +844,13 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 					tempBoardBarbaric[i][j] = tempBoard[i][j];
 				}
 			}
-			int* v = minimax(tempBoardBarbaric, depth-1, turn-1);
+			int v = minimax(tempBoardBarbaric, depth-1, turn-1);
 //			if(clockT == 17){
 //				test++;
 //				cout<<"Test = "<<test<<endl;
 //			}
-			if(v[0] < bestValue[0]){
-				bestValue[0] = v[0];
+			if(v < bestValue){
+				bestValue = v;
 				if(depth == depthFixed){
 					bestCoordinate[0] = moves[counter][0];
 					bestCoordinate[1] = moves[counter][1];
@@ -858,14 +858,6 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 //					system("pause");
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
 //			if(test >= 900){
 //				for(int ab = 0; ab<20; ab++){
 //					cout<<"X = "<<moves[ab][0]<<", Y = "<<moves[ab][1]<<endl;
@@ -877,7 +869,7 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 		}
 		return bestValue;
 	} else {
-		int bestValue[2] = {INT_MIN, -1};
+		int bestValue = INT_MIN;
 		int** moves = availableMoveSimulation(simulation, turn);
 		while(moves[counter][0]!=-1){
 			int newBoard[8][8];
@@ -892,13 +884,13 @@ int* minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, an
 					tempBoardBarbaric[i][j] = tempBoard[i][j];
 				}
 			}
-			int* v = minimax(tempBoardBarbaric, depth-1, turn+1);
+			int v = minimax(tempBoardBarbaric, depth-1, turn+1);
 //			if(clockT == 50){
 //				test2++;
 //				cout<<"Test2 = "<<test2<<endl;
 //			}
-			if(v[0] > bestValue[0]){
-				bestValue[0] = v[0];
+			if(v > bestValue){
+				bestValue = v;
 				if(depth == depthFixed){
 					bestCoordinate[0] = moves[counter][0];
 					bestCoordinate[1] = moves[counter][1];
@@ -1498,9 +1490,9 @@ void trainAI(){
 	bool valid = false;//check for valid input;
 	printBoard();
 	
-	
 	while(valid2 == false){
 		(turn == 1) ? simulation1ToWeight() : simulationToWeight();
+//		printWeight();
 		cout<<"================================================="<<endl;
 		if(turn == 0){
 			cout<<"WHITE PLAYER'S TURN!"<<endl;
@@ -1509,14 +1501,14 @@ void trainAI(){
 		}
 		cout<<"================================================="<<endl;
 		
-		aiMove();
-		x = bestCoordinate[0];
-		y = bestCoordinate[1];
-		
-//		if(clockT == 50 || clockT == 49){
+//		if(clockT >= 21){
 //			cout<<"X = "<<x<<" and Y = "<<y;
 //			system("pause");
 //		}
+		
+		aiMove();
+		x = bestCoordinate[0];
+		y = bestCoordinate[1];
 		
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
@@ -1590,6 +1582,10 @@ void printWeight(){
 	}
 	system("pause");
 }
+
+
+
+
 
 
 
