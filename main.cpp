@@ -49,7 +49,7 @@ struct possibleMove{
 	struct possibleMove *prev;
 }*head, *tail, *temp;
 
-int board[8][8] = 
+int board[8][8] =
 {
 {-1,-1,-1,-1,-1,-1,-1,-1},
 {-1,-1,-1,-1,-1,-1,-1,-1},
@@ -61,7 +61,7 @@ int board[8][8] =
 {-1,-1,-1,-1,-1,-1,-1,-1}
 };
 
-int start[8][8] = 
+int start[8][8] =
 {
 {-1,-1,-1,-1,-1,-1,-1,-1},
 {-1,-1,-1,-1,-1,-1,-1,-1},
@@ -91,7 +91,7 @@ int clockT = 0;
 int numOfTraining = 0;
 int counterWrite = 0;
 
-int main (void){
+int main(int argc, char *argv[]){
 //	while(true){
 //		int choice = 0, choice1 = 0;
 //		initialize();
@@ -289,10 +289,10 @@ void twoPlayerMode(){//Player Vs Player Mode
 		}
 		x = characterParser(character);
 		y = --y;
-		
+
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
-		
+
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
@@ -350,10 +350,10 @@ void vsAIWhite(){
 			x = bestCoordinate[0];
 			y = bestCoordinate[1];
 		}
-		
+
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
-		
+
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
@@ -411,10 +411,10 @@ void vsAIBlack(){
 			x = bestCoordinate[0];
 			y = bestCoordinate[1];
 		}
-		
+
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
-		
+
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
@@ -599,7 +599,7 @@ void flipAction(int x, int y){//this checks if it is valid and directly flips if
 	//system("pause");
 	int turn = clockT%2;//0 = white's turn, 1 = black's turn
 	int enemy = 0;
-	if(turn == 0){	
+	if(turn == 0){
 		enemy = 1;
 	}
 	int x1 = x, y1 = y;
@@ -806,9 +806,9 @@ void countWinner(){
 			}
 		}
 	}
-	
+
 	printBoard();
-	
+
 	if(black == white){
 		cout<<endl<<"Black = "<<black;
 		cout<<endl<<"White = "<<white;
@@ -828,12 +828,12 @@ void countWinner(){
 
 void addPossible(int x, int y){
 	temp = new possibleMove;
-	
+
 	temp->x = x;
 	temp->y = y;
 	temp->next = NULL;
 	temp->prev = NULL;
-	
+
 	if(head == NULL){
 		head = tail = temp;
 	} else {
@@ -881,13 +881,13 @@ int checkValid(int x, int y){//CHECKS IF THE INPUT IS AVAILABLE IN POSSIBLE MOVE
 void readTraining(){
 	float data;
     string word2 = "";
-	
+
     FILE * fp;
     fp = fopen("trainingData.txt", "r");//OPEN FILE ONLY TO READ
 	char word[50];
-	
+
 	string str;
-	
+
     for(int x = 0; x < 4; x++){
     	for(int y = 0; y < 4; y++){
     		//cout<<"JAJAJAJAJA";
@@ -898,9 +898,9 @@ void readTraining(){
     		//fscanf(fp, "%f", word);
     		//cout<<word;
     		word2 = word;
-    		
+
     		data = atof(word2.c_str());
-    		
+
     		smallWeight[y][x] = data;
 //    		cout<<smallWeight[y][x]<<" ";
     		//system("pause");
@@ -913,7 +913,7 @@ void readTraining(){
 void writeTraining(){
 	FILE *fp;
 	fp = fopen("trainingData.txt", "w");
-	
+
 	for(int x = 0; x < 4; x++){
 		for(int y = 0; y < 4; y++){
 			fprintf(fp,"%f\n",smallWeight[y][x]);
@@ -927,17 +927,17 @@ void expandWeight(){
 	weight[0][1] = weight[1][7] = weight[7][6] = weight[6][0] = smallWeight[0][1];
 	weight[0][2] = weight[2][7] = weight[7][5] = weight[5][0] = smallWeight[0][2];
 	weight[0][3] = weight[3][7] = weight[7][4] = weight[4][0] = smallWeight[0][3];
-	
+
 	weight[1][0] = weight[0][6] = weight[6][7] = weight[7][1] = smallWeight[1][0];
 	weight[1][1] = weight[1][6] = weight[6][6] = weight[6][1] = smallWeight[1][1];
 	weight[1][2] = weight[2][6] = weight[6][5] = weight[5][1] = smallWeight[1][2];
 	weight[1][3] = weight[3][6] = weight[6][4] = weight[4][1] = smallWeight[1][3];
-	
+
 	weight[2][0] = weight[0][5] = weight[5][7] = weight[7][2] = smallWeight[2][0];
 	weight[2][1] = weight[1][5] = weight[5][6] = weight[6][2] = smallWeight[2][1];
 	weight[2][2] = weight[2][5] = weight[5][5] = weight[5][2] = smallWeight[2][2];
 	weight[2][3] = weight[3][5] = weight[5][4] = weight[4][2] = smallWeight[2][3];
-	
+
 	weight[3][0] = weight[0][4] = weight[4][7] = weight[7][3] = smallWeight[3][0];
 	weight[3][1] = weight[1][4] = weight[4][6] = weight[6][3] = smallWeight[3][1];
 	weight[3][2] = weight[2][4] = weight[4][5] = weight[5][3] = smallWeight[3][2];
@@ -948,9 +948,9 @@ void expandWeight(){
 
 int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and 1 is foe
 	int counter = 0;
-	
+
 	int evaluated = -1;
-	
+
 	int** tempBoard = 0;
 	tempBoard = new int*[8];
 	for(int x = 0; x<8; x++){
@@ -959,9 +959,9 @@ int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and
 			tempBoard[x][y] = -1;
 		}
 	}
-	
+
 	int tempBoardBarbaric[8][8];
-	
+
 	if(depth == 0){
 		evaluated = evaluateBoard(simulation, turn);
 		return evaluated;
@@ -1074,9 +1074,9 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 	int total = 0;
 	(turn == 0) ? (enemy = 1) : (0);
 	int x1, y1;
-	
+
 	int i = 0;
-	
+
 //	cout<<endl<<endl;
 //	for(int i = 0; i<8; i++){
 //		for(int j = 0; j<8; j++){
@@ -1084,7 +1084,7 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 //		}
 //		cout<<endl;
 //	}
-	
+
 	for(int x = 0; x < 8; x++){
 		for(int y = 0; y < 8; y++){
 			x1 = x; y1 = y;
@@ -1277,14 +1277,14 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 			}
 		}
 	}
-	
+
 //	int i = 0;
 //	while(result[i][0]!=-1){
 //		cout<<"RESULT = X:"<<result[i][0]<<", Y:"<<result[i][1]<<endl;
 //		i++;
 //	}
 //	system("pause");
-	
+
 	return result;//RETURNS 1 IF POSSIBLE MOVE EXISTS AND 0 IF NO POSITION IS POSSIBLE (A.K.A GAME OVER)
 }
 
@@ -1294,7 +1294,7 @@ int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips ava
 	int** result = 0;
 	result = new int*[8];
 	int enemy = 0;
-	if(turn == 0){	
+	if(turn == 0){
 		enemy = 1;
 	}
 	int x1 = x, y1 = y;
@@ -1509,7 +1509,7 @@ void autoMoveAI(){//AI vs AI
 	bool valid2 = false;//check for valid position input
 	bool valid = false;//check for valid input;
 	printBoard();
-		
+
 	while(valid2 == false){
 		cout<<"================================================="<<endl;
 		if(turn == 0){
@@ -1521,15 +1521,15 @@ void autoMoveAI(){//AI vs AI
 		aiMove();
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
-		
+
 //		if(clockT == 50 || clockT == 49){
 //			cout<<"X = "<<x<<" and Y = "<<y;
 //			system("pause");
 //		}
-		
+
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
-		
+
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
@@ -1584,7 +1584,7 @@ void trainAI(){
 	bool valid2 = false;//check for valid position input
 	bool valid = false;//check for valid input;
 //	printBoard();
-	
+
 	while(valid2 == false){
 		(turn == 1) ? simulation1ToWeight() : simulationToWeight();
 //		printWeight();
@@ -1595,19 +1595,19 @@ void trainAI(){
 //			cout<<"BLACK PLAYER'S TURN!"<<endl;
 //		}
 //		cout<<"================================================="<<endl;
-		
+
 //		if(clockT >= 21){
 //			cout<<"X = "<<x<<" and Y = "<<y;
 //			system("pause");
 //		}
-		
+
 		aiMove();
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
-		
+
 //		cout<<"X = "<<x<<" and Y = "<<y;
 //		system("pause");
-		
+
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
@@ -1651,9 +1651,9 @@ void countWinnerTraining(){
 			}
 		}
 	}
-	
+
 //	printBoard();
-	
+
 	if(black == white){
 //		cout<<endl<<"Black = "<<black;
 //		cout<<endl<<"White = "<<white;
@@ -1699,10 +1699,3 @@ void initializeNewTraining(){
 	}
 	expandWeight();
 }
-
-
-
-
-
-
-
