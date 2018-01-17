@@ -6,183 +6,115 @@
 #include <limits.h>
 #include <ctime>
 #include "unnamed-library.cpp"
+#include "othello.hpp"
 
 using namespace std;
 
-void initialize();
-void printBoard();
-void printArray();//debug purpose function
-void twoPlayerMode();//Player Vs Player Mode
-void vsAIWhite();
-void vsAIBlack();
-int characterParser(char x);
-int availableMove();//lists all available moves
-void flipAction(int x, int y);//flips chosen moves
-void countWinner();
-void addPossible(int x, int y);
-void clearPossible();
-int checkValid(int x, int y);//CHECKS IF THE INPUT IS AVAILABLE IN POSSIBLE MOVES
-void readTraining();
-void writeTraining();
-void expandWeight();
-int minimax(int simulation[8][8], int depth, bool maximizingPlayer);
-int evaluateBoard(int simulation[8][8], int turn);
-int** availableMoveSimulation(int simulation[8][8], int turn);//lists all available moves for the simulation
-int** processMoveSimulation(int board[8][8], int x, int y, int turn);//flips available move on the certain simulation
-void aiMove();
-void autoMoveAI();//AI vs AI
-//void expandWeightSim();
-//void expandWeightSim1();
-void simulationToWeight();
-void simulation1ToWeight();
-void modifyTraining();
-void trainAI();
-void determineNewWeight(int winner);
-void countWinnerTraining();
-void printWeight();
-void initializeNewTraining();
-
-struct possibleMove{
-	int x = 0;
-	int y = 0;
-	struct possibleMove *next;
-	struct possibleMove *prev;
-}*head, *tail, *temp;
-
-int board[8][8] =
-{
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1}
-};
-
-int start[8][8] =
-{
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,1,0,-1,-1,-1},
-{-1,-1,-1,0,1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1},
-{-1,-1,-1,-1,-1,-1,-1,-1}
-};
-
-float smallWeight[4][4];
-float weight[8][8];
-
-float smallWeightSim[4][4];//ORIGINAL NON GENETIC WEIGHTS
-float weightSim[8][8];
-
-float smallWeightSim1[4][4];//MODIFIED GENETIC WEIGHTS
-float weightSim1[8][8];
-
-int bestCoordinate[2];
-
-int depthFixed = 3;
-float modifyGap = 0.5;
-int clockT = 0;
-
-int numOfTraining = 0;
-int counterWrite = 0;
-
 int main(int argc, char *argv[]){
-//	while(true){
-//		int choice = 0, choice1 = 0;
-//		initialize();
-//		cout<<"Othello AI"<<endl
-//		<<"Made By: Andre Valentino, Fenbert, Thomas Dwi Dinata"<<endl
-//		<<"Choice:"<<endl
-//		<<"1)Versus AI"<<endl
-//		<<"2)2 Player Mode"<<endl
-//		<<"3)Train The AI"<<endl
-//		<<"4)Exit"<<endl
-//		<<"Choose : ";
-//		cin>>choice;
-//		switch(choice){
-//			case 1:
-//				while(choice!=4){
-//					cout<<endl<<endl<<"1)Player vs White AI (1st Turn)"<<endl
-//					<<"2)Player vs Black AI(2nd Turn)"<<endl
-//					<<"3)Random"<<endl
-//					<<"4)Cancel"<<endl
-//					<<"Choose: ";
-//					cin>>choice1;
-//					if(choice1 == 1){
-//						vsAIWhite();
-//					} else if (choice1 == 2){
-//						vsAIBlack();
-//					} else if (choice1 == 3){
-//						randomise(0,1);
-//					} else if(choice1 == 4){
-//						break;
-//					} else {
-//						cout<<"Wrong Choice! (1-4 Only!)";
-//						system("pause");
-//						system("cls");
-//					}
-//				}
-//				break;
-//			case 2:
-//				twoPlayerMode();
-//				break;
-//			case 3:
-//				cout<<"Number of Training Iterations(-1 to cancel) :";
-//				cin>>choice1;
-//				if(choice1<0){
-//					break;
-//				}
-//				while(numOfTraining<choice1){
-//					modifyTraining();
-//					clockT++;
-//					while(availableMove()){
-//						trainAI();
-//						clockT++;
-//					}
-//					countWinnerTraining();
-//					numOfTraining++;
-//					printf("%d\n", numOfTraining);
-//					initializeNewTraining();
-//				}
-//				break;
-//			case 4:
-//				system("cls");
-//				cout<<"Thank You for using the othello AI program! Have a great day!";
-//				break;
-//			default:
-//				cout<<"Wrong Input! Try Again!";
-//				system("pause");
-//				system("cls");
-//				break;
-//		}
-//	}
-	initialize();
-	clockT++;
-	while(availableMove()){
-//		twoPlayerMode();
-//		vsAIWhite();
-		vsAIBlack();
-		clockT++;
+
+	int choice = 0;
+
+	while(true)
+	{
+		initialize();
+		startup();
+		printf("Welcome to " BOLDCYAN "Othello AI"RESETCOLOUR" Program, please choose a menu:\n");
+		printf("\t1) Player VS AI\n");
+		printf("\t2) 2 Player Mode\n");
+		printf("\t3) AI Training\n");
+		printf("\t4) Exit\n");
+		printf("Choice : ");
+		choice = scanNumber();
+		printf("\n");
+		switch(choice)
+		{
+			case 1:
+				choice = 0;
+				do{
+					printf("Please choose an option for Player VS AI:\n");
+					printf("\t1) Player vs White AI (1st Turn)\n");
+					printf("\t2) Player vs Black AI (2nd Turn)\n");
+					printf("\t3) Random\n");
+					printf("Choice : ");
+					choice = scanNumber();
+					switch(choice)
+					{
+						case 1:
+							clockT++;
+							while(availableMove()){
+								vsAIWhite();
+								clockT++;
+							}
+							countWinner();
+							break;
+						case 2:
+							clockT++;
+							while(availableMove()){
+								vsAIBlack();
+								clockT++;
+							}
+							break;
+						case 3:
+							if(randomise(0,1))
+							{
+								clockT++;
+								while(availableMove()){
+									vsAIWhite();
+									clockT++;
+								}
+							}
+							else
+							{
+								clockT++;
+								while(availableMove()){
+									vsAIBlack();
+									clockT++;
+								}
+							}
+							countWinner();
+							break;
+					}
+				}while(choice > 4 || choice < 1);
+				break;
+			case 2:
+				printf("Two Player Mode selected! Have fun!");
+				clockT++;
+				while(availableMove()){
+					twoPlayerMode();
+					clockT++;
+				}
+				countWinner();
+				break;
+			case 3:
+				cout<<"Number of Training Iterations(-1 to cancel) :";
+				choice = scanNumber();
+				if(choice < 0)
+					break;
+				while(numOfTraining < choice){
+					modifyTraining();
+					clockT++;
+					while(availableMove()){
+						trainAI();
+						clockT++;
+					}
+					countWinnerTraining();
+					numOfTraining++;
+					printf("%d\n", numOfTraining);
+					initializeNewTraining();
+				}
+				printf("Training finished!\n");
+				system_pause();
+				break;
+			case 4:
+				system_clear();
+				cout<<"Thank You for using the othello AI program! Have a great day!";
+				break;
+			default:
+				cout<<"Wrong Input! Try Again!";
+				system_pause();
+				break;
+		}
 	}
-	countWinner();
-//	while(numOfTraining<100){
-//		modifyTraining();
-//		clockT++;
-//		while(availableMove()){
-//			trainAI();
-//			clockT++;
-//		}
-//		countWinnerTraining();
-//		numOfTraining++;
-//		printf("%d\n", numOfTraining);
-//		initializeNewTraining();
-//	}
-	system("pause");
 	return 0;
 }
 
@@ -212,9 +144,9 @@ void initialize(){
 }
 
 void printBoard(){
-	char black = 177;
-	char white = 219;
-	char possible = 248;
+	char black = BLACK_TEXT;
+	char white = WHITE_TEXT;
+	char possible = POSSIBLE_TEXT;
 	int numBlack = 0, numWhite = 0;
 	cout<<"CLOCK = \t"<<clockT<<endl;
 	cout<<"   A   B   C   D   E   F   G   H  "<<endl;
@@ -277,12 +209,10 @@ void twoPlayerMode(){//Player Vs Player Mode
 			character = tolower(character);
 			if(character>=97 && character<=104 && y>=1 && y<=8){
 				valid = true;
-				//cout<<"OUT OF FIRST LOOP!";
-				//system("pause");
 			} else if(y == 22){
 				printArray();//debug
 			} else {
-				system("cls");
+				system_clear();
 				printBoard();
 				cout<<"INVALID INPUT!"<<endl;
 			}
@@ -290,23 +220,19 @@ void twoPlayerMode(){//Player Vs Player Mode
 		x = characterParser(character);
 		y = --y;
 
-//		cout<<"X = "<<x<<" and Y = "<<y;
-//		system("pause");
-
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
 		} else {
 			valid = false;
-			system("cls");
+			system_clear();
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
 	clearPossible();
 	cout<<"Valid Input!"<<endl;
-//	system("pause");
-	system("cls");
+	system_clear();
 }
 
 void vsAIWhite(){
@@ -333,12 +259,10 @@ void vsAIWhite(){
 				character = tolower(character);
 				if(character>=97 && character<=104 && y>=1 && y<=8){
 					valid = true;
-					//cout<<"OUT OF FIRST LOOP!";
-					//system("pause");
 				} else if(y == 22){
 					printArray();//debug
 				} else {
-					system("cls");
+					system_clear();
 					printBoard();
 					cout<<"INVALID INPUT!"<<endl;
 				}
@@ -351,23 +275,19 @@ void vsAIWhite(){
 			y = bestCoordinate[1];
 		}
 
-//		cout<<"X = "<<x<<" and Y = "<<y;
-//		system("pause");
-
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
 		} else {
 			valid = false;
-			system("cls");
+			system_clear();
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
 	clearPossible();
 	cout<<"Valid Input!"<<endl;
-//	system("pause");
-	system("cls");
+	system_clear();
 }
 
 void vsAIBlack(){
@@ -394,12 +314,10 @@ void vsAIBlack(){
 				character = tolower(character);
 				if(character>=97 && character<=104 && y>=1 && y<=8){
 					valid = true;
-					//cout<<"OUT OF FIRST LOOP!";
-					//system("pause");
 				} else if(y == 22){
 					printArray();//debug
 				} else {
-					system("cls");
+					system_clear();
 					printBoard();
 					cout<<"INVALID INPUT!"<<endl;
 				}
@@ -412,23 +330,19 @@ void vsAIBlack(){
 			y = bestCoordinate[1];
 		}
 
-//		cout<<"X = "<<x<<" and Y = "<<y;
-//		system("pause");
-
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
 		} else {
 			valid = false;
-			system("cls");
+			system_clear();
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
 	clearPossible();
 	cout<<"Valid Input!"<<endl;
-//	system("pause");
-	system("cls");
+	system_clear();
 }
 
 int characterParser(char x){
@@ -455,10 +369,8 @@ int characterParser(char x){
 	return -1;
 }
 
-int availableMove(){//lists all available moves
-	//cout<<"INSIDE CHECK VALID FUNCTION!";
-	//system("pause");
-	int turn = clockT%2;//0 = white's turn, 1 = black's turn
+int availableMove(){ //lists all available moves
+	int turn = clockT % 2; //0 = white's turn, 1 = black's turn
 	int overallValid = 0;
 	int enemy = 0;
 	(turn == 0) ? (enemy = 1) : (0);
@@ -582,12 +494,6 @@ int availableMove(){//lists all available moves
 						}
 					}
 				}
-				//if(overallValid == 1){
-					//cout<<"X = "<<x<<" and Y = "<<y;
-					//system("pause");
-				//}
-				//cout<<"SUCESSSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
-				//system("pause");
 			}
 		}
 	}
@@ -595,8 +501,6 @@ int availableMove(){//lists all available moves
 }
 
 void flipAction(int x, int y){//this checks if it is valid and directly flips if it is
-	//cout<<"INSIDE CHECK VALID FUNCTION!";
-	//system("pause");
 	int turn = clockT%2;//0 = white's turn, 1 = black's turn
 	int enemy = 0;
 	if(turn == 0){
@@ -890,29 +794,18 @@ void readTraining(){
 
     for(int x = 0; x < 4; x++){
     	for(int y = 0; y < 4; y++){
-    		//cout<<"JAJAJAJAJA";
-    		fgets(word, 50, fp)!=NULL;
-    		//cout<<"TEST!";
-    		//system("pause");
-			//fscanf (fp, "%f", &data);
-    		//fscanf(fp, "%f", word);
-    		//cout<<word;
+    		fgets(word, 50, fp);
     		word2 = word;
-
     		data = atof(word2.c_str());
-
     		smallWeight[y][x] = data;
-//    		cout<<smallWeight[y][x]<<" ";
-    		//system("pause");
 		}
-//		cout<<endl;
 	}
 	fclose(fp);
 }
 
 void writeTraining(){
 	FILE *fp;
-	fp = fopen("trainingData.txt", "w");
+	fp = fopen("trainingData.txt", "w+");
 
 	for(int x = 0; x < 4; x++){
 		for(int y = 0; y < 4; y++){
@@ -969,8 +862,6 @@ int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and
 	if(turn == 1){//assume 1 is enemy, so we want the minimum for enemy
 		int bestValue = INT_MAX;
 		int** moves = availableMoveSimulation(simulation, turn);
-//		cout<<"Moves"<<moves[0][0]<<" ------ "<<moves[0][1];
-//		system("pause");
 		while(moves[counter][0]!=-1){
 			int newBoard[8][8];
 			for(int i = 0; i<8; i++){
@@ -985,26 +876,13 @@ int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and
 				}
 			}
 			int v = minimax(tempBoardBarbaric, depth-1, turn-1);
-//			if(clockT == 17){
-//				test++;
-//				cout<<"Test = "<<test<<endl;
-//			}
 			if(v < bestValue){
 				bestValue = v;
 				if(depth == depthFixed){
 					bestCoordinate[0] = moves[counter][0];
 					bestCoordinate[1] = moves[counter][1];
-//					cout<<"[TURN = 1]Best Coordinate = x:"<<bestCoordinate[0]<<", y:"<<bestCoordinate[1];
-//					system("pause");
 				}
 			}
-//			if(test >= 900){
-//				for(int ab = 0; ab<20; ab++){
-//					cout<<"X = "<<moves[ab][0]<<", Y = "<<moves[ab][1]<<endl;
-//				}
-//				cout<<"Last Move Selected = x: "<<moves[counter][0]<<", y: "<<moves[counter][1]<<endl;
-//				system("pause");
-//			}
 			counter++;
 		}
 		return bestValue;
@@ -1025,17 +903,11 @@ int minimax(int simulation[8][8], int depth, int turn){//assume 0 is friend, and
 				}
 			}
 			int v = minimax(tempBoardBarbaric, depth-1, turn+1);
-//			if(clockT == 50){
-//				test2++;
-//				cout<<"Test2 = "<<test2<<endl;
-//			}
 			if(v > bestValue){
 				bestValue = v;
 				if(depth == depthFixed){
 					bestCoordinate[0] = moves[counter][0];
 					bestCoordinate[1] = moves[counter][1];
-//					cout<<"[TURN = 2]Best Coordinate = x:"<<bestCoordinate[0]<<", y:"<<bestCoordinate[1];
-//					system("pause");
 				}
 			}
 			counter++;
@@ -1076,14 +948,6 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 	int x1, y1;
 
 	int i = 0;
-
-//	cout<<endl<<endl;
-//	for(int i = 0; i<8; i++){
-//		for(int j = 0; j<8; j++){
-//			cout<<simulation[i][j]<<"\t";
-//		}
-//		cout<<endl;
-//	}
 
 	for(int x = 0; x < 8; x++){
 		for(int y = 0; y < 8; y++){
@@ -1268,29 +1132,14 @@ int** availableMoveSimulation(int simulation[8][8], int turn){//lists all availa
 						}
 					}
 				}
-//				if(overallValid == 1){
-//					cout<<"X = "<<x<<" and Y = "<<y;
-//					system("pause");
-//				}
-//				cout<<"SUCESSSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
-//				system("pause");
 			}
 		}
 	}
-
-//	int i = 0;
-//	while(result[i][0]!=-1){
-//		cout<<"RESULT = X:"<<result[i][0]<<", Y:"<<result[i][1]<<endl;
-//		i++;
-//	}
-//	system("pause");
 
 	return result;//RETURNS 1 IF POSSIBLE MOVE EXISTS AND 0 IF NO POSITION IS POSSIBLE (A.K.A GAME OVER)
 }
 
 int** processMoveSimulation(int board[8][8], int x, int y, int turn){//flips available move on the certain simulation
-	//cout<<"INSIDE CHECK VALID FUNCTION!";
-	//system("pause");
 	int** result = 0;
 	result = new int*[8];
 	int enemy = 0;
@@ -1522,28 +1371,18 @@ void autoMoveAI(){//AI vs AI
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
 
-//		if(clockT == 50 || clockT == 49){
-//			cout<<"X = "<<x<<" and Y = "<<y;
-//			system("pause");
-//		}
-
-//		cout<<"X = "<<x<<" and Y = "<<y;
-//		system("pause");
-
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
 		} else {
 			valid = false;
-			system("cls");
+			system_clear();
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
 	clearPossible();
-//	cout<<"Valid Input!"<<endl;
-//	system("pause");
-	system("cls");
+	system_clear();
 }
 
 void simulationToWeight(){
@@ -1570,11 +1409,8 @@ void modifyTraining(){
 	for(int i = 0; i<4; i++){
 		for(int j = 0; j<4; j++){
 			(rand()%2 == 0) ? smallWeightSim1[i][j] += modifyGap : smallWeightSim1[i][j] -= modifyGap;
-//			cout<<smallWeightSim1[i][j]<<" ";
 		}
-//		cout<<endl;i
 	}
-//	system("pause");
 }
 
 void trainAI(){
@@ -1585,44 +1421,25 @@ void trainAI(){
 	bool valid = false;//check for valid input;
 //	printBoard();
 
-	while(valid2 == false){
-		(turn == 1) ? simulation1ToWeight() : simulationToWeight();
-//		printWeight();
-//		cout<<"================================================="<<endl;
-//		if(turn == 0){
-//			cout<<"WHITE PLAYER'S TURN!"<<endl;
-//		} else {
-//			cout<<"BLACK PLAYER'S TURN!"<<endl;
-//		}
-//		cout<<"================================================="<<endl;
-
-//		if(clockT >= 21){
-//			cout<<"X = "<<x<<" and Y = "<<y;
-//			system("pause");
-//		}
+		while(valid2 == false){
+			(turn == 1) ? simulation1ToWeight() : simulationToWeight();
 
 		aiMove();
 		x = bestCoordinate[0];
 		y = bestCoordinate[1];
-
-//		cout<<"X = "<<x<<" and Y = "<<y;
-//		system("pause");
 
 		if(checkValid(x, y)){
 			valid2 = true;
 			flipAction(x, y);
 		} else {
 			valid = false;
-			system("pause");
-			system("cls");
+			system_pause();
+			system_clear();
 			printBoard();
 			cout<<"INVALID POSITION!"<<endl;
 		}
 	}
 	clearPossible();
-//	cout<<"Valid Input!"<<endl;
-//	system("pause");
-//	system("cls");
 }
 
 void determineNewWeight(int winner){
@@ -1655,33 +1472,24 @@ void countWinnerTraining(){
 //	printBoard();
 
 	if(black == white){
-//		cout<<endl<<"Black = "<<black;
-//		cout<<endl<<"White = "<<white;
-//		cout<<endl<<"WINNER = TIE!"<<endl;
 		determineNewWeight(0);
 		return;
 	}
 	if(black < white){
-//		cout<<endl<<"Black = "<<black;
-//		cout<<endl<<"WHITE = "<<white;
-//		cout<<endl<<"WINNER = WHITE"<<endl;
 		determineNewWeight(0);
 	} else {
-//		cout<<endl<<"BLACK = "<<black;
-//		cout<<endl<<"White = "<<white;
-//		cout<<endl<<"WINNER = BLACK"<<endl;
 		determineNewWeight(1);
 	}
 }
 
-void printWeight(){
+void printWeight(){ // Debug purpose only
 	for(int i=0; i<4; i++){
 		for(int j = 0; j<4; j++){
 			cout<<smallWeight[i][j]<<" ";
 		}
 		cout<<endl;
 	}
-	system("pause");
+	system_pause();
 }
 
 void initializeNewTraining(){
