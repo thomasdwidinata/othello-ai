@@ -107,7 +107,8 @@ int main(int argc, char *argv[]){
 				break;
 			case 4:
 				system_clear();
-				cout<<"Thank You for using the othello AI program! Have a great day!";
+				printf("Thank You for using the othello AI program! Have a great day!");
+				exit(0);
 				break;
 			default:
 				cout<<"Wrong Input! Try Again!";
